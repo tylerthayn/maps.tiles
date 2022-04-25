@@ -1,7 +1,8 @@
 require('@tyler.thayn/js.core')
 let Maps = require('@tyler.thayn/maps.core')
 let ChildProcess = require('child_process')
-let Fs = require('fs'), Path = require('path')
+let Fs = require('fs')
+let Path = require('path')
 
 let basemaps = {
 	dark: 'dark-v10',
@@ -32,10 +33,10 @@ module.exports = function (options = {}) {
 			Url: `http://maps.ttx.us.to/tiles/${options.style}/${tile.slippy.join('/')}?view`
 		}
 
-		let exifTool = ChildProcess.spawn(Path.resolve(options.bin), Object.keys(tags).map(tag => `-${tag}=${tags[tag]}`).concat([options.path, '-overwrite_original']))
+		let exifTool = ChildProcess.spawn(options.bin, Object.keys(tags).map(tag => `-${tag}=${tags[tag]}`).concat([options.path, '-overwrite_original']))
 		exifTool.on('error', reject)
 		//exifTool.stdout.on('data', chunk => {log(chunk)})
 		exifTool.on('close', code => {resolve(options)})
-
 	})
+
 }

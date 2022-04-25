@@ -1,7 +1,8 @@
 require('@tyler.thayn/js.core')
 let Maps = require('@tyler.thayn/maps.core')
+let Fs = require('fs')
 let Https = require('https')
-let Fs = require('fs'), Path = require('path')
+let Path = require('path')
 
 let basemaps = {
 	dark: 'dark-v10',
@@ -23,10 +24,9 @@ let defaults = {
 module.exports = function (style, key, options = {}) {
 	return new Promise((resolve, reject) => {
 		options = Extend({}, defaults, options, {style: style, key: key})
-		try {Fs.mkdirSync(options.folder, {recursive: true})} catch (e) {}
 
 		let tile = new Maps.Tile(key)
-		tile.bounds[1] -= options.attributionHeight * ((tile.bounds[3] - tile.bounds[1])/ options.width)
+		tile.bounds[1] -= options.attributionHeight * ((tile.bounds[3] - tile.bounds[1])/ options.height)
 
 		options.url = `https://api.mapbox.com/styles/v1/mapbox/${basemaps[style]}/static/[${tile.bounds.map(b=>{return b.toFixed(8)}).join(',')}]/${options.width}x${options.height+options.attributionHeight}?access_token=${process.env.MapboxApiToken}`
 		options.path = Path.resolve(options.folder, style, key+'.jpg')

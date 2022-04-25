@@ -1,6 +1,7 @@
 require('@tyler.thayn/js.core')
 let ChildProcess = require('child_process')
-let Fs = require('fs'), Path = require('path')
+let Fs = require('fs')
+let Path = require('path')
 
 let defaults = {
 	path: '',
